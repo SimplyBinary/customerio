@@ -3,14 +3,13 @@
     "request": {
       "body": "{\"data\":{\"title\":\"Campaign Test\"}}",
       "headers": {
+        "Authorization": "***",
         "Content-Type": "application/json"
       },
       "method": "post",
-      "options": {
-        "basic_auth": "***"
-      },
+      "options": [],
       "request_body": "",
-      "url": "https://api.customer.io/v1/api/campaigns/7/triggers"
+      "url": "https://api.customer.io/v1/campaigns/9/triggers"
     },
     "response": {
       "binary": false,
