@@ -826,7 +826,7 @@ defmodule Customerio do
           opts :: Keyword.t()
         ) :: {:ok, result} | {:error, Customerio.Error.t()}
   def trigger_campaign(id, data_map, opts \\ []) do
-    send_api_request(:post, "/campaigns/#{URI.encode(id |> to_string)}/triggers", data_map, opts)
+    send_api_request(:post, "campaigns/#{URI.encode(id |> to_string)}/triggers", data_map, opts)
   end
 
   @doc """
