@@ -843,8 +843,8 @@ defmodule Customerio do
   ## Example
 
   ```elixir
-  iex> Customerio.trigger_campaign(1, %{data: %{title: "hello"}})
-  {:ok, "{...}"}
+  iex> Customerio.trigger_campaign!(1, %{data: %{title: "hello"}})
+  "{...}"
   iex> Customerio.trigger_campaign(666, %{data: %{title: "heaven company"}})
   ** (Customerio.Error) "Epic fail!"
   ```
@@ -966,9 +966,19 @@ defmodule Customerio do
   ## Example
 
   ```elixir
-  iex> Customerio.trigger_transactional_push(1, %{data: %{title: "hello"}})
+  iex> Customerio.trigger_transactional_push(
+  ...>   1,
+  ...>   "email@address.com",
+  ...>   %{id: 123},
+  ...>   %{data: %{title: "hello"}}
+  ...> )
   {:ok, "{...}"}
-  iex> Customerio.trigger_transactional_push(666, %{data: %{title: "heaven company"}})
+  iex> Customerio.trigger_transactional_push(
+  ...>   666,
+  ...>   "email@address.com",
+  ...>   %{id: 123},
+  ...>   %{data: %{title: "heaven company"}}
+  ...> )
   {:error, %Customerio.Error{}}
   ```
   """
@@ -1007,8 +1017,20 @@ defmodule Customerio do
   ## Example
 
   ```elixir
-  iex> Customerio.trigger_transactional_push!(1, %{data: %{title: "hello"}})
+  iex> Customerio.trigger_transactional_push!(
+  ...>   1,
+  ...>   "email@address.com",
+  ...>   %{id: 123},
+  ...>   %{data: %{title: "hello"}}
+  ...> )
   "{...}"
+  iex> Customerio.trigger_transactional_push!(
+  ...>   666,
+  ...>   "email@address.com",
+  ...>   %{id: 123},
+  ...>   %{data: %{title: "hello"}}
+  ...> )
+  ** (Customerio.Error) "Epic fail!"
   ```
   """
   @spec trigger_transactional_push!(
