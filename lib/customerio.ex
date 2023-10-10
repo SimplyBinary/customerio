@@ -860,4 +860,168 @@ defmodule Customerio do
       {:error, e} -> raise e
     end
   end
+
+  @doc """
+  Triggers a transactional message.
+
+  ## Params
+
+    * `id` - the unique identifier of the transactional message.
+
+    * `data` - data to be included in the message.
+
+  ## Example
+
+  ```elixir
+  iex> Customerio.trigger_transactional_message(
+  ...>   1,
+  ...>   "email@address.com",
+  ...>   %{id: 123},
+  ...>   %{message_data: %{title: "hello"}}
+  ...> )
+  {:ok, "{...}"}
+  iex> Customerio.trigger_transactional_message(
+  ...>   666,
+  ...>   "email@address.com",
+  ...>   %{id: 123},
+  ...>   %{message_data: %{title: "hello"}}
+  ...> )
+  {:error, %Customerio.Error{}}
+  ```
+  """
+  @spec trigger_transactional_message(
+          id :: value,
+          to :: value,
+          identifiers :: map(),
+          data_map :: map(),
+          opts :: Keyword.t()
+        ) :: {:ok, result} | {:error, Customerio.Error.t()}
+  def trigger_transactional_message(id, to, identifiers, data_map, opts \\ []) do
+    identifiers = Map.merge(data_map["identifiers"] || %{}, identifiers)
+
+    data_map =
+      data_map
+      |> Map.merge(%{
+        "transactional_message_id" => id,
+        "to" => to,
+        "identifiers" => identifiers
+      })
+
+    send_api_request(:post, "send/email", data_map, opts)
+  end
+
+  @doc """
+  Triggers a transactional message.
+
+  Raises `Customerio.Error` if fails.
+
+  ## Params
+
+    * `id` - the unique identifier of the transactional message.
+
+    * `data` - data to be included in the message.
+
+  ## Example
+
+  ```elixir
+  iex> Customerio.trigger_transactional_message!(
+  ...>   1,
+  ...>   "email@address.com",
+  ...>   %{id: 123},
+  ...>   %{message_data: %{title: "hello"}}
+  ...> )
+  "{...}"
+  iex> Customerio.trigger_transactional_message!(
+  ...>   666,
+  ...>   "email@address.com",
+  ...>   %{id: 123},
+  ...>   %{message_data: %{title: "hello"}}
+  ...> )
+  ** (Customerio.Error) "Epic fail!"
+  ```
+  """
+  @spec trigger_transactional_message!(
+          id :: value,
+          to :: value,
+          identifiers :: map(),
+          data_map :: map(),
+          opts :: Keyword.t()
+        ) :: result | no_return()
+  def trigger_transactional_message!(id, to, identifiers, data_map, opts \\ []) do
+    case trigger_transactional_message(id, to, identifiers, data_map, opts) do
+      {:ok, result} -> result
+      {:error, e} -> raise e
+    end
+  end
+
+  @doc """
+  Triggers a transactional push notification.
+
+  ## Params
+
+    * `id` - the unique identifier of the transactional push notification.
+
+    * `data` - data to be included in the push notification.
+
+  ## Example
+
+  ```elixir
+  iex> Customerio.trigger_transactional_push(1, %{data: %{title: "hello"}})
+  {:ok, "{...}"}
+  iex> Customerio.trigger_transactional_push(666, %{data: %{title: "heaven company"}})
+  {:error, %Customerio.Error{}}
+  ```
+  """
+  @spec trigger_transactional_push(
+          id :: value,
+          to :: value,
+          identifiers :: map(),
+          data_map :: map(),
+          opts :: Keyword.t()
+        ) :: {:ok, result} | {:error, Customerio.Error.t()}
+  def trigger_transactional_push(id, to, identifiers, data_map, opts \\ []) do
+    identifiers = Map.merge(data_map["identifiers"] || %{}, identifiers)
+
+    data_map =
+      data_map
+      |> Map.merge(%{
+        "transactional_message_id" => id,
+        "to" => to,
+        "identifiers" => identifiers
+      })
+
+    send_api_request(:post, "send/push", data_map, opts)
+  end
+
+  @doc """
+  Triggers a transactional push notification.
+
+  Raises `Customerio.Error` if fails.
+
+  ## Params
+
+    * `id` - the unique identifier of the transactional mpush notificationessage.
+
+    * `data` - data to be included in the push notification.
+
+  ## Example
+
+  ```elixir
+  iex> Customerio.trigger_transactional_push!(1, %{data: %{title: "hello"}})
+  "{...}"
+  ```
+  """
+  @spec trigger_transactional_push!(
+          id :: value,
+          to :: value,
+          identifiers :: map(),
+          data_map :: map(),
+          opts :: Keyword.t()
+        ) :: result | no_return()
+  def trigger_transactional_push!(id, to, identifiers, data_map, opts \\ []) do
+    case trigger_transactional_push(id, to, identifiers, data_map, opts) do
+      {:ok, result} -> result
+      {:error, e} -> raise e
+    end
+  end
 end
