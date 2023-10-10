@@ -12,7 +12,8 @@ defmodule Customerio.DeleteTest do
 
     test "Fail with bad credentials" do
       use_cassette "delete/fail#credentials" do
-        {:error, %Customerio.Error{code: code, reason: reason}} = Customerio.delete(1, basic_auth: {"", ""})
+        {:error, %Customerio.Error{code: code, reason: reason}} =
+          Customerio.delete(1, basic_auth: {"", ""})
 
         assert 401 = code
         assert reason =~ ~r/Unauthorized request/

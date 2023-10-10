@@ -37,10 +37,6 @@ defmodule Customerio.SegmentsTest do
     end
   end
 
-
-
-
-
   describe "Customerio::remove_from_segment" do
     test "Got wrapped responce if success" do
       use_cassette "remove_from_segment/pass" do

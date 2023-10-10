@@ -5,6 +5,7 @@ defmodule Customerio.IdentityTest do
   describe "Customerio::identify" do
     test "Got responce if success" do
       ExVCR.Config.filter_request_options("basic_auth")
+
       use_cassette "identify/pass" do
         assert {:ok, result} = Customerio.identify(1, %{email: "test@example.com"})
         assert "{}\n" == result
@@ -13,7 +14,8 @@ defmodule Customerio.IdentityTest do
 
     test "Fail with bad credentials" do
       use_cassette "identify/fail#credentials" do
-        {:error, %Customerio.Error{reason: reason, code: code}} = Customerio.identify(1, %{email: "test@example.com"}, basic_auth: {"", ""})
+        {:error, %Customerio.Error{reason: reason, code: code}} =
+          Customerio.identify(1, %{email: "test@example.com"}, basic_auth: {"", ""})
 
         assert reason =~ ~r/Unauthorized request/
         assert 401 = code
